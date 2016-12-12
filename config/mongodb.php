@@ -1,7 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: drKox
- * Date: 12.12.2016
- * Time: 16:50
- */
+return [
+    'class' => '\yii\mongodb\Connection',
+    'dsn' => 'mongodb://localhost:27017/miska',
+];
