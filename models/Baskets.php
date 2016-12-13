@@ -1,14 +1,15 @@
 <?php
 namespace app\models;
 
+use MongoDB\BSON\ObjectID;
 use Yii;
 use yii\mongodb\ActiveRecord;
 
 /**
  * User model
  *
- * @property integer $_id
- * @property string $user_id
+ * @property ObjectID $_id
+ * @property ObjectID $user_id
  * @property string $family_id
  * @property string $created
  * @property string $city_id
@@ -41,7 +42,7 @@ class Baskets extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['_id' => 'user_id']);
     }
 
 }

@@ -1,19 +1,18 @@
 <?php
 namespace app\models;
 
+use MongoDB\BSON\ObjectID;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use yii\mongodb\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
  * User model
  *
- * @property integer $id
+ * @property ObjectID $_id
  * @property string $phone
- * @property string $firstname
- * @property string $lastname
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
@@ -32,9 +31,17 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function collectionName()
     {
-        return '{{%user}}';
+        return 'user';
+    }
+
+    /**
+     * @return array
+     */
+    public function attributes()
+    {
+        return ['_id', 'phone', 'password_hash', 'password_reset_token', 'email', 'auth_key', 'status', 'role', 'created_at', 'updated_at', 'password'];
     }
 
     /**
@@ -59,11 +66,14 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * @param ObjectID $id
+     * @return static
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+//        var_dump($id->__toString());
+//        die();
+        return static::findOne(['_id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
