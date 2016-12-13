@@ -1,8 +1,14 @@
 <?php
 
 /* @var $this yii\web\View */
+/* @var $docs \app\models\Baskets[] */
 
 $this->title = 'My Yii Application';
+foreach ($docs as $doc)
+{
+    var_dump($doc['user']['phone']);
+    echo '<br>';
+}
 ?>
 <div class="site-index">
 
