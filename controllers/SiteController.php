@@ -9,9 +9,11 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\Baskets;
 use app\models\SignupForm;
-use app\models\Family;
+use app\models\ResetPasswordForm;
+use app\models\PasswordResetRequestForm;
+use yii\base\InvalidParamException;
+use yii\web\BadRequestHttpException;
 
 class SiteController extends Controller
 {
@@ -197,7 +199,7 @@ class SiteController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
+            Yii::$app->session->setFlash('success', 'Новый пароль сохранен.');
 
             return $this->goHome();
         }
