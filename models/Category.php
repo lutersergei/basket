@@ -1,7 +1,31 @@
 <?php
+namespace app\models;
+
+use MongoDB\BSON\ObjectID;
+use yii\mongodb\ActiveRecord;
+
 /**
- * Created by PhpStorm.
- * User: drKox
- * Date: 13.12.2016
- * Time: 19:26
+ * Category model
+ *
+ * @property ObjectID $_id
+ * @property string $name
  */
+class Category extends ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function collectionName()
+    {
+        return 'category';
+    }
+
+    /**
+     * @return array
+     */
+    public function attributes()
+    {
+        return ['_id', 'name'];
+    }
+
+}

@@ -2,7 +2,6 @@
 namespace app\models;
 
 use MongoDB\BSON\ObjectID;
-use Yii;
 use yii\mongodb\ActiveRecord;
 
 /**
