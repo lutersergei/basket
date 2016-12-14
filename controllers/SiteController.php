@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Category;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -10,6 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Baskets;
 use app\models\SignupForm;
+use app\models\Family;
 
 class SiteController extends Controller
 {
@@ -62,12 +64,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $docs = Baskets::find()->with('user')->asArray()->all();
-
+        $cat = Category::find()->asArray()->all();
         return $this->render('index', [
-            'docs' => $docs
+           'cat' => $cat
         ]);
     }
+
 
     /**
      * Logs in a user.
