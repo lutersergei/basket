@@ -4,6 +4,7 @@ $params = require(__DIR__ . '/params.php');
 
 $config = [
     'id' => 'basic',
+//    'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
@@ -50,6 +51,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<action:test>/<cat:\d+>/<subcat:\d+>' => 'site/<action>',
+                '<action:test>/<cat:\d+>' => 'site/<action>',
+                '<action>' => 'site/<action>',
             ],
         ],
     ],
