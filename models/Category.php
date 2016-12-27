@@ -25,7 +25,7 @@ class Category extends ActiveRecord
      */
     public function attributes()
     {
-        return ['_id', 'name'];
+        return ['_id', 'name', 'pictureName', 'subList'];
     }
 
 }
