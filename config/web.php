@@ -51,8 +51,10 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<action:test>/<cat:\d+>/<subcat:\d+>' => 'site/<action>',
-                '<action:test>/<cat:\d+>' => 'site/<action>',
+                'basket/<category_id:\d+>/<subcategory_id:\d+>' => 'site/index',
+                'basket/<category_id:\d+>' => 'site/index',
+                'basket' => 'site/index',
+
                 '<action>' => 'site/<action>',
             ],
         ],
