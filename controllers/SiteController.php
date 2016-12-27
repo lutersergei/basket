@@ -4,7 +4,9 @@ namespace app\controllers;
 
 use app\models\Category;
 use Yii;
+use yii\base\Response;
 use yii\filters\AccessControl;
+use yii\mongodb\Query;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -60,18 +62,89 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays homepage.
+     * Displays basket page.
      *
-     * @return string
+     * @param null $category_id
+     * @param null $subcategory_id
+     * @return mixed|string
      */
-    public function actionIndex()
+    public function actionIndex($category_id = null, $subcategory_id = null)
     {
-        $cat = Category::find()->asArray()->all();
-        return $this->render('index', [
-           'cat' => $cat
+        if ($subcategory_id)
+        {
+            //If GET request includes category and subcategory
+            $subcategory_id = (int) $subcategory_id;
+            $subcategory = Category::find()
+                ->where(["subList.id" => $subcategory_id])
+                ->select([
+                    'subList' =>
+                        ['$elemMatch' =>
+                            ['id' => $subcategory_id]]])
+                ->asArray()
+                ->one();
+
+            if($products = $subcategory['subList'][0]['productList'])
+            {
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+                return $products;
+            }
+            else die('NOOO'); //TODO бросить эксепшн Нет такой подкатегори, вы ошиблись адресом
+
+//            $keyOfSubcategory = $this->findKeyOfSubcategory($subcategories, $subcategory_id);
+//                var_dump($subCategories['subList'][$keyOfCategory]);
+//                die();
+//            $products = $subcategories[$keyOfSubcategory];
+//            return $products;
+
+        }
+        if ($category_id)
+        {
+            //If GET request includes only category
+            $category_id = (int) $category_id;
+            $category = Category::find()
+                ->where(['id' => $category_id])
+                ->select(['subList.id' => 1, 'subList.name' => 1])
+                ->asArray()
+                ->one();
+            if ($subcategories = $category['subList'])
+            {
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+                return $subcategories;
+            }
+            else die('NOOO'); //TODO бросить эксепшн Нет такой категори, вы ошиблись адресом
+        }
+//        $query = new Query();
+//        $query->select(['id', 'name', 'pictureName'])->from('category')->where('status=1');
+//        $categories = $query->all();
+//
+        $categories = Category::find()->select(['id', 'name', 'pictureName'])->asArray()->all();
+
+//        $categories = Category::find()->where([
+//            'subList' => [
+//                '$elemMatch' => [
+//                    'name' => 'Молоко'
+//                ]
+//            ]
+//        ])->asArray()->all();
+//        var_dump($categories);
+//        die();
+        return $this->render('products', [
+           'categories' => $categories
         ]);
     }
 
+    public function findKeyOfSubcategory($catList, $subcat)
+    {
+//        var_dump($catList, $subcat);
+
+        foreach ($catList as $key=>$value)
+        {
+            if ($value['id'] === $subcat) return $key;
+        }
+//        die();
+    }
 
     /**
      * Logs in a user.
